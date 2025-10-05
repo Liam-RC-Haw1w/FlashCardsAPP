@@ -15,6 +15,7 @@ import com.example.flashcardsapp.ui.theme.FlashCardsAPPTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat.enableEdgeToEdge
 import com.example.flashcardsapp.MainActivity.Screen
@@ -38,8 +39,36 @@ class MainActivity : ComponentActivity() {
             var feedback by remember { mutableStateOf(value = "")}
             
 
+                    .padding(all =16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    when (currentScreen) {
+                        Screen.WELCOME -> {
+                            Text(
+                                text="Hello there! Welcome to the Flashcards App!",
+                                style = MaterialTheme.typography.headlineSmall
+                            )
+                            Spacer(modifier = Modifier.height(height =8.dp))
+                            Text(text ="Test your knowledge with true or false questions.")
+                            Spacer(modifier = Modifier.height(height =16.dp))
+                            Button(onClick = {
+                                score = 0
+                                questionIndex = 0
+                                currentScreen = Screen.FLASHCARD
+                            }) {
+                                Text(text="Start The Quiz")
+                            }
+                        }
+                        Screen.FLASHCARD -> TODO()
+                        Screen.SCORE -> TODO()
+                        Screen.REVIEW -> TODO()
+                    }
+                }
+            }
         }
     }
 }
-
-
