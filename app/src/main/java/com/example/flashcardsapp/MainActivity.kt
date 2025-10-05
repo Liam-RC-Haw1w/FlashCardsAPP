@@ -12,13 +12,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.flashcardsapp.ui.theme.FlashCardsAPPTheme
-
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat.enableEdgeToEdge
+import com.example.flashcardsapp.MainActivity.Screen
 class MainActivity : ComponentActivity() {
+    enum class Screen {
+    Welcome, Flashcard, Score, Review
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            var currentScreen by remember { mutableStateOf(value = Screen.Welcome)}
+            var score by remember { mutableStateOf(value =0) }
+            var questions by remember { mutableStateOf(value= 0) }
+
+            val questions = listOf(
+                "test"
+            )
+
+            var answered by remember { mutableStateOf(value = false)}
+            var feedback by remember { mutableStateOf(value = "")}
+            
 
         }
     }
 }
+
+
