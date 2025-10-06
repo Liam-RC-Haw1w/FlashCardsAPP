@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
             var questions by remember { mutableStateOf(value= 0) }
 
             val questions = listOf(
-                "test"
+                "test" to true
             )
 
             var answered by remember { mutableStateOf(value = false)}
@@ -68,6 +68,13 @@ class MainActivity : ComponentActivity() {
                         Screen.REVIEW -> TODO()
                     }
                 }
+                com.example.flashcardsapp.MainActivity.Screen.FLASHCARD -> {
+                    val (questionText, correctAnswer) = questions[questionIndex]
+                    Text(text ="Question ${questionIndex + 1} of ${questions.size}",
+                    style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(height =8.dp))
+                    Text(questionText, style = MaterialTheme.typography.bodyLarge)
+                    Spacer(modifier = Modifier.height(height =16.dp))
             }
         }
     }
