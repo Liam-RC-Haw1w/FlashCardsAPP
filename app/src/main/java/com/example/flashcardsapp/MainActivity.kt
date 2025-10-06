@@ -19,27 +19,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat.enableEdgeToEdge
 import com.example.flashcardsapp.MainActivity.Screen
+
 class MainActivity : ComponentActivity() {
+
     enum class Screen {
-    Welcome, Flashcard, Score, Review
+        WELCOME, FLASHCARD, SCORE, REVIEW
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
-            var currentScreen by remember { mutableStateOf(value = Screen.Welcome)}
-            var score by remember { mutableStateOf(value =0) }
-            var questions by remember { mutableStateOf(value= 0) }
+            var currentScreen by remember { mutableStateOf(value = Screen.WELCOME) }
+            var score by remember { mutableStateOf(value = 0) }
+            var questionIndex by remember { mutableStateOf(value = 0) }
 
             val questions = listOf(
                 "test" to true
             )
 
-            var answered by remember { mutableStateOf(value = false)}
-            var feedback by remember { mutableStateOf(value = "")}
-            
+            var answered by remember { mutableStateOf(value = false) }
+            var feedback by remember { mutableStateOf(value = "") }
 
-                    .padding(all =16.dp),
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(all = 16.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Column(
@@ -75,7 +81,53 @@ class MainActivity : ComponentActivity() {
                     Spacer(modifier = Modifier.height(height =8.dp))
                     Text(questionText, style = MaterialTheme.typography.bodyLarge)
                     Spacer(modifier = Modifier.height(height =16.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(space =8.dp)) {
+                Button(onClick = {
+                    if (!answered) {
+                        if (correctAnswer) {
+                            score++
+                            feedback = "Correct!"
+                        } else {
+                            feedback = "Wrong!"
+                        }
+                        answered = true
+                    }
+                }) {
+                    Text(text ="True")
+                }
+
+                Button(onClick = {
+                    if (!answered) {
+                        if (!correctAnswer) {
+                            score++
+                            feedback = "Correct!"
+                        } else {
+                            feedback = "Wrong!"
+                        }
+                        answered = true
+                    }
+                }) {
+                    Text(text ="False")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(height =8.dp))
+            Text(text = feedback)
+
+            if (answered) {
+                Spacer(modifier = Modifier.height(height =8.dp))
+                Button(onClick = {
+                    answered = false
+                    feedback = ""
+                    if (questionIndex < questions.lastIndex) {
+                        questionIndex++
+                    } else {
+                        currentScreen = com.example.flashcardsapp.MainActivity.Screen.SCORE
+                    }
+                }) {
+                    Text(text ="Next")
+                }
             }
         }
+        }
     }
-}
