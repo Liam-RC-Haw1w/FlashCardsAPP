@@ -36,7 +36,10 @@ class MainActivity : ComponentActivity() {
             var questionIndex by remember { mutableStateOf(value = 0) }
 
             val questions = listOf(
-                "test" to true
+                "Question" to false,
+                "Question" to true,
+                "Question" to false,
+                "Question" to true
             )
 
             var answered by remember { mutableStateOf(value = false) }
@@ -103,6 +106,33 @@ class MainActivity : ComponentActivity() {
                             feedback = "Correct!"
                         } else {
                             feedback = "Wrong!"
+                        com.example.flashcardsapp.MainActivity.Screen.SCORE -> {
+                            Text(text ="The quiz is now completed",
+                                style = MaterialTheme.typography.headlineSmall)
+                            Spacer(modifier = Modifier.height(height =8.dp))
+                            Text(text ="Your Score: $score out of ${questions.size}",
+                                style = MaterialTheme.typography.bodyLarge)
+                            Spacer(modifier = Modifier.height(height =8.dp))
+                            val finalFeedback = when {
+                                score == questions.size -> "Well done"
+                                score >= questions.size / 2 -> "Good try"
+                                else -> "Keep practising"
+                            }
+                            Text(text =finalFeedback)
+
+                            Spacer(modifier = Modifier.height(height =16.dp))
+                            Button(onClick = {
+                                currentScreen = com.example.flashcardsapp.MainActivity.Screen.REVIEW
+                            }) {
+                                Text(text ="Review your answers")
+                            }
+
+                            Spacer(modifier = Modifier.height(height =8.dp))
+                            Button(onClick = {
+                                currentScreen = com.example.flashcardsapp.MainActivity.Screen.WELCOME
+                            }) {
+                                Text(text ="Restart the quiz")
+                            }
                         }
                         answered = true
                     }
@@ -123,11 +153,26 @@ class MainActivity : ComponentActivity() {
                         questionIndex++
                     } else {
                         currentScreen = com.example.flashcardsapp.MainActivity.Screen.SCORE
+                        com.example.flashcardsapp.MainActivity.Screen.REVIEW -> {
+                            Text(text ="Review your answers",
+                                style = MaterialTheme.typography.titleLarge)
+                            Spacer(modifier = Modifier.height(height =8.dp))
+                            questions.forEachIndexed { index, pair ->
+                                Text(text ="${index + 1}. ${pair.first} - Answer: ${if (pair.second)
+                                    "True" else "False"}")
+                                Spacer(modifier = Modifier.height(height =4.dp))
+                            }
+
+                            Spacer(modifier = Modifier.height(height =16.dp))
+                            Button(onClick = {
+                                currentScreen = com.example.flashcardsapp.MainActivity.Screen.WELCOME
+                            }) {
+                                Text(text ="Back to the Start")
+                            }
+                        }
                     }
-                }) {
-                    Text(text ="Next")
                 }
             }
         }
-        }
     }
+}
